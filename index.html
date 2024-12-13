@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Curso y Chatbot</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    
+    .btn-float {
+      position: fixed;
+      bottom: 20px; 
+      right: 20px;
+      z-index: 1000;
+      border-radius: 50%;
+      background-color: #007bff;
+      color: white;
+      font-size: 15px; 
+      padding: 20px; 
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .navbar {
+      background-color: #00509e; 
+    }
+
+    .container {
+      margin-top: 20px;
+    }
+
+    .card-header {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .card-body {
+      background-color: #f9f9f9;
+    }
+
+    .chatbot-container {
+      position: fixed;
+      bottom: 70px; 
+      right: 20px;
+      width: 350px;
+      height: 500px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 999;
+    }
+
+    .chatbot-header {
+      background-color: #00509e;
+      color: #fff;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chatbot-header h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .close-chatbot {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .chatbot-body {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background-color: #f9f9f9;
+    }
+
+    .chatbot-body p {
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
+
+    .chatbot-body p:nth-child(odd) {
+      background-color: #d4e3fc;
+      align-self: flex-end;
+    }
+
+    .chatbot-body p:nth-child(even) {
+      background-color: #e0e0e0;
+    }
+
+    .chatbot-footer {
+      display: flex;
+      border-top: 1px solid #ddd;
+      padding: 10px;
+      background-color: #f0f0f0;
+    }
+
+    .chatbot-footer input {
+      flex: 1;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .chatbot-footer button {
+      background-color: #00509e;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .chatbot-footer button:hover {
+      background-color: #003f7f;
+    }
+
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="https://sam.edu.pe/website_components/logo/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+        Instituto SAM
+      </a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-8">
+        <h2>Flor Noemi CASTELLANOS VILLALVA</h2>
+        <h5>Vista General De Curso</h5>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Línea de tiempo</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Cursos</a>
+          </li>
+        </ul>
+        <div class="mt-3">
+          <h6>Recientemente vencidas</h6>
+          <p class="text-danger">Prueba objetiva pendiente - 22 de nov</p>
+          <h6>Próximos 30 días</h6>
+          <p>Prueba de desarrollo pendiente - 15 de dic</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-header">Archivos Privados</div>
+          <div class="card-body">No hay archivos disponibles</div>
+        </div>
+        <div class="card">
+          <div class="card-header">Usuarios En Línea</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Ana CANCHARI REYNO</li>
+            <li class="list-group-item">Amelia SANABRIA AMANCAY</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-float" onclick="toggleChatbot()">¿?</button>
+
+  <div class="chatbot-container">
+    <div class="chatbot-header">
+      <h2>Chatbot</h2>
+      <button class="close-chatbot" onclick="closeChatbot()">&times;</button>
+    </div>
+    <div class="chatbot-body">
+    </div>
+    <div class="chatbot-footer">
+      <input type="text" id="messageInput" placeholder="Escribe un mensaje...">
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function toggleChatbot() {
+      const chatbot = document.querySelector('.chatbot-container');
+      if (chatbot.style.display === 'none' || chatbot.style.display === '') {
+        chatbot.style.display = 'flex';
+      } else {
+        chatbot.style.display = 'none';
+      }
+    }
+  
+    function closeChatbot() {
+      const chatbot = document.querySelector('.chatbot-container');
+      chatbot.style.display = 'none';
+    }
+  
+    function sendMessage() {
+      const messageInput = document.getElementById('messageInput');
+      const message = messageInput.value.trim();
+      if (message === "") return;
+  
+      const chatbotBody = document.querySelector('.chatbot-body');
+  
+      const userMessage = document.createElement('p');
+      userMessage.textContent = message;
+      userMessage.style.backgroundColor = '#d4e3fc';
+      userMessage.style.textAlign = 'right';
+      chatbotBody.appendChild(userMessage);
+  
+      messageInput.value = "";
+  
+      setTimeout(() => {
+        const botMessage = document.createElement('p');
+        if (message.toLowerCase().includes("calendario")) {
+          botMessage.innerHTML = `Puedes ver el calendario aquí: <a href="https://sam.edu.pe/AulaVirtual/calendar/view.php?view=month&time=1732856400" target="_blank">Calendario</a>`;
+        } else if (message.toLowerCase().includes("aplicaciones web")) {
+          botMessage.innerHTML = `Puedes aprender más sobre aplicaciones web aquí: <a href="https://sam.edu.pe/AulaVirtual/course/view.php?id=751">Aplicaciones Web</a>`;
+        } else {
+          botMessage.textContent = "Gracias por tu mensaje. ¿En qué puedo ayudarte?";
+        }
+        chatbotBody.appendChild(botMessage);
+        chatbotBody.scrollTop = chatbotBody.scrollHeight;
+      }, 1000);
+    }
+  
+    document.getElementById('messageInput').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+  
+
+</body>
+</html>
